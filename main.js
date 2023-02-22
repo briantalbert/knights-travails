@@ -9,5 +9,5 @@ const myKnight = new Knight(4, 4);
 //chessBoard.printBoard();
 
 let moveTree = new Tree(myKnight.posX, myKnight.posY);
-console.log(moveTree.root);
-console.log(moveTree.moveList);
+let path = moveTree.travel([4,4],[2,5]);
+console.log(path);

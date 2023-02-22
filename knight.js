@@ -10,13 +10,5 @@ export class Knight {
         }
     }
 
-    coordsMatch(startCoords, endCoords) {
-        if (startCoords[0] == endCoords[0] && startCoords[1] == endCoords[1]) {
-            return true;
-        }
-
-        return false;
-    }
-
     
 }

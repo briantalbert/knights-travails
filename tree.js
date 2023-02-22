@@ -1,9 +1,25 @@
 import { Cell } from "./cell.js";
+import { Queue } from "./queue.js";
 
 export class Tree {
     constructor(row, col) {
         this.root = new Cell(row, col);
         this.moveList = this.getValidMoves();
+    }
+
+    travel(startCoords, endCoords) {
+        let source = new Cell(startCoords[0], startCoords[1]);
+        let dest = new Cell(endCoords[0], endCoords[1]);
+        
+    }
+        
+    
+
+    coordsMatch(startCoords, endCoords) {
+        if ((startCoords[0] == endCoords[0]) && (startCoords[1] == endCoords[1])) {
+            return true;
+        }
+        return false;
     }
 
     getValidMoves() {
