@@ -7,7 +7,7 @@ export class Queue {
         this.queue.push(item);
     }
 
-    pop() {
+    dequeue() {
         return this.queue.splice(0, 1);
     }
 
@@ -15,7 +15,4 @@ export class Queue {
         return this.queue.length == 0;
     }
 
-    length() {
-        return this.queue.length;
-    }
 }

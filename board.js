@@ -1,14 +1,29 @@
+import { Cell } from "./cell.js";
+
 export class Board {
 
     constructor() {
-        this.board = [['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],
-                      ['_','_','_','_','_','_','_','_'],];
+        this.board = [];
+        let ctr = 0;
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++){
+                let newCell = new Cell (i, j);
+                //console.log('Valid moves for cell# ' + ctr + ' (' + i + ', ' + j + ') are: ' + newCell.validMoves);
+                this.board.push(newCell);
+                ctr++;
+            }
+        }
+
+        this.adjList = this.makeAdjList();
+    }
+
+    makeAdjList() {
+        let adjList = [];
+        this.board.forEach(cell => {
+            adjList.push(cell.validMoves);
+        });
+
+        return adjList;
     }
 
     placeKnight(knight) {
@@ -29,3 +44,17 @@ export class Board {
         });
     }
 }
+
+
+/*
+
+this.board = [['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],
+                      ['_','_','_','_','_','_','_','_'],];
+
+*/

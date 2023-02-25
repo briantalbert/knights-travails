@@ -3,13 +3,15 @@ export class Cell {
         this.row = row;
         this.col = col;
         this.validMoves = this.getValidMoves();
-        this.distance = null;
-        this.prev = null;
-        this.isSource = false;
+        this.visited = false;
     }
 
     toString() {
         return this.row + ', ' + this.col;
+    }
+
+    visit() {
+        this.visited = true;
     }
 
     setDistance(dist) {
@@ -51,6 +53,19 @@ export class Cell {
             }
         });
 
-        return validated;
+        return this.coordToIndex(validated);
+    }
+
+    coordToIndex(coordList) {
+        let idxList = [];
+        coordList.forEach(coord => {
+            let x = coord[0];
+            let y = coord[1];
+
+            let idx = (8 * x) + y;
+            idxList.push(idx);
+        });
+
+        return idxList;
     }
 }

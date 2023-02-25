@@ -3,54 +3,64 @@ import { Queue } from "./queue.js";
 
 export class Tree {
     constructor(row, col) {
-        this.root = new Cell(row, col);
-        this.moveList = this.getValidMoves();
+        this.startIdx = (8 * row) + col;
     }
 
-    travel(startCoords, endCoords) {
-        let source = new Cell(startCoords[0], startCoords[1]);
-        let dest = new Cell(endCoords[0], endCoords[1]);
-        
-    }
-        
-    
+    coordsToIdx(coords) {
+        let x = coords[0];
+        let y = coords[1];
 
-    coordsMatch(startCoords, endCoords) {
-        if ((startCoords[0] == endCoords[0]) && (startCoords[1] == endCoords[1])) {
-            return true;
+        return (8 * x) + y;
+    }
+
+    travel(board, graph, dest, path, source = this.startIdx) {
+        //board is a 1 dimensional array of cells objects.
+        //Each cell has a row and column, a list of valid
+        //moves, and a boolean to state if it has been 
+        //visited yet.
+        //
+        //graph is adjacency list.
+        //the index is the cell number, the array
+        //at that index is the list of cell numbers
+        //that it connects to.
+        //
+        //dest is the destination in coordinate
+        //form. i.e., (x, y). I change that to 
+        //a single number index (0 - 63).
+        
+        let destIdx = this.coordsToIdx(dest);
+        path.push(source);
+        //console.log('Going from ' + source + ' to ' + destIdx);
+
+        if (source == destIdx) {
+            return path;
         }
-        return false;
-    }
-
-    getValidMoves() {
-        let row = this.root.row;
-        let col = this.root.col;
-
-        let possibleMoveList = [[row + 2, col - 1],
-                                [row + 2, col + 1],
-                                [row - 2, col - 1],
-                                [row - 2, col + 1],
-                                [row + 1, col + 2],
-                                [row - 1, col + 2],
-                                [row + 1, col - 2],
-                                [row - 1, col - 2]];
         
-        let validMoves = this.validate(possibleMoveList);
-        return validMoves;
-    }
+        let neighbors = graph[source];
+        neighbors.forEach(nbr => {
+            if (!board[nbr].visited) {
+                board[nbr].visit();
 
-    validate(moveList) {
-        let validated = [];
-        moveList.forEach(coords => {
-            let row = coords[0];
-            let col = coords[1];
+                if (nbr == destIdx && path[-1] != destIdx) {
+                    path.push(nbr);
+                }
+                
+                if (graph[nbr].includes(destIdx)) {
+                    path.push(nbr);
+                    path.push(destIdx);
+                } else {
+                    //console.log('concatting');
+                    path.concat(this.travel(board, graph, dest, path, nbr));
+                }
 
-            if (row > 7 || col > 7 || row < 0 || col < 0) {
-            } else {
-                validated.push(coords);
             }
         });
-
-        return validated;
+        path.pop();
+        return path;
     }
+        
+
+
+    
+
 }
