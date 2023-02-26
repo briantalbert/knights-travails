@@ -3,7 +3,16 @@ export class Cell {
         this.row = row;
         this.col = col;
         this.validMoves = this.getValidMoves();
+        this.parent = null;
         this.visited = false;
+    }
+
+    setParent(cell) {
+        this.parent = cell;
+    }
+
+    unParent() {
+        this.parent = null;
     }
 
     toString() {
@@ -16,12 +25,6 @@ export class Cell {
 
     setDistance(dist) {
         this.distance = dist;
-    }
-
-    setPrev(node) {
-        if (node) {
-            this.prev = node;
-        }    
     }
 
     getValidMoves() {

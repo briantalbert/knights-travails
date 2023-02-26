@@ -8,7 +8,6 @@ export class Board {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++){
                 let newCell = new Cell (i, j);
-                //console.log('Valid moves for cell# ' + ctr + ' (' + i + ', ' + j + ') are: ' + newCell.validMoves);
                 this.board.push(newCell);
                 ctr++;
             }

@@ -14,6 +14,8 @@ export class Tree {
     }
 
     travel(board, graph, dest, path, source = this.startIdx) {
+        //attempting to use BFS
+        //
         //board is a 1 dimensional array of cells objects.
         //Each cell has a row and column, a list of valid
         //moves, and a boolean to state if it has been 
@@ -27,40 +29,58 @@ export class Tree {
         //dest is the destination in coordinate
         //form. i.e., (x, y). I change that to 
         //a single number index (0 - 63).
-        
+        //
+        //----------------------------------------------------
+        //convert destination coordinates to index in 1D array
         let destIdx = this.coordsToIdx(dest);
-        path.push(source);
-        //console.log('Going from ' + source + ' to ' + destIdx);
-
+        
         if (source == destIdx) {
-            return path;
+            return [source];
         }
         
-        let neighbors = graph[source];
-        neighbors.forEach(nbr => {
-            if (!board[nbr].visited) {
-                board[nbr].visit();
+        let q = new Queue();
+        q.enqueue(source);
+        board[source].visit;
+        while (!q.isEmpty()) {
+            let v = q.dequeue();
+            let neighbors = graph[v];
 
-                if (nbr == destIdx && path[-1] != destIdx) {
-                    path.push(nbr);
-                }
-                
-                if (graph[nbr].includes(destIdx)) {
-                    path.push(nbr);
-                    path.push(destIdx);
-                } else {
-                    //console.log('concatting');
-                    path.concat(this.travel(board, graph, dest, path, nbr));
+            for (let i = 0; i < neighbors.length; i++) {
+                let thisCell = board[neighbors[i]];
+
+                if (!thisCell.visited) {
+                    q.enqueue(neighbors[i]);
+                    thisCell.visit();
+                    thisCell.setParent(board[v]);
+                    
                 }
 
+                if (neighbors[i] == destIdx) {
+                    q.flush();
+                    break;
+                }
             }
-        });
-        path.pop();
+            
+            
+        }
+        board[source].unParent();
+        path = this.getPath(board[source], board[destIdx]);
+            
         return path;
-    }
         
+    }
 
+    getPath(start, dest, path = []) {
+        let current = dest;
+        while (current.parent) {
+            path.push([current.row, current.col]);
+            current = current.parent;
+        }
+        
+        path.push([start.row, start.col]);
+        path.reverse()
+        return path;
 
-    
+    }    
 
 }

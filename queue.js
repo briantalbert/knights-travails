@@ -15,4 +15,8 @@ export class Queue {
         return this.queue.length == 0;
     }
 
+    flush() {
+        this.queue = [];
+    }
+
 }
